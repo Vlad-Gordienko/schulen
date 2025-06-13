@@ -13,14 +13,10 @@ field_config = {
         '22.07.2008', '23.07.2005', '24.05.2007', '29.08.2010', '30.07.2006'
     ],
     'Geschlecht': ['W', 'M'],
-    'WohngemeindeKnz': [
-        '6440050000', '6440050001', '6440050002', '6440050003', '6440050004',
-        '6440050005', '6440050006', '6440050007', '6440050008', '6440050009',
-        '6440050010', '6440050011', '6440050012', '6440050013', '6440050014',
-        '6440050015', '6440050016', '6440050017', '6440050018', '6440050019',
-        '6440050020', '6440050021', '6440050022', '6440050023', '6440050024'
+    'di_WohngemeindeKnz': [
+        '644000000000', '644000000001', '644000000002',
     ],
-    'WohngemeindeName': [
+    'di_WohngemeindeName': [
         'Friedberg-Ockstadt', 'Glauburg-Glauberg', 'Nidda-Ober-Schmitten', 'Nidda-Ober-Lais',
         'Bad Nauheim-Nieder-Mörlen', 'Friedberg', 'Bad Vilbel', 'Bad Nauheim-Nieder-Mörlen',
         'Friedberg (Hessen)', 'Altenstadt-Lindheim', 'Wölfersheim-Melbach', 'Ranstadt-Dauernheim',
