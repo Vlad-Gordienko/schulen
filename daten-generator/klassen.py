@@ -10,7 +10,7 @@ field_config = {
     'kl_Erhebung': ['Statistik'],
     'kl_Status': ['freigegeben'],
     'kl_Schuljahr': ['2024/2025'],
-    'kl_DienststellenNr': [3677, 6274],
+    'kl_DienststellenNr': [6289, 6106, 3445, 3677, 6274],
     'kl_Standort': [0],
     'kl_Name': [
         '05a', '05b', '06a', '06b', '07a', '07b', '08a', '08b',
