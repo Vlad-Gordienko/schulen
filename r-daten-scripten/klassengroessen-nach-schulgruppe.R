@@ -1,13 +1,10 @@
 library(readxl)
 library(dplyr)
 
-klassen_path <- "../daten-generator/daten/Klassen.xlsx"
-schulen_path <- "../daten-generator/daten/Schulen.xlsx"
+source("common/konstanten.R")
 
 klassen_df <- read_excel(klassen_path)
 schulen_df <- read_excel(schulen_path)
-
-wk_code <- "644000000000"
 
 schulen_filtered <- schulen_df %>%
   filter(
