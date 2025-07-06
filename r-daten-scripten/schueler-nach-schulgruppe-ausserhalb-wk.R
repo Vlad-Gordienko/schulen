@@ -1,34 +1,51 @@
-library(readxl)
-library(dplyr)
+# ------------------------------------------------------------------------------
+# Skript zur Ermittlung der Schüler aus dem Wetteraukreis,
+# die öffentliche Schulen außerhalb des Kreises besuchen
+# Verwendet: Schüler.xlsx und Schulen.xlsx
+# ------------------------------------------------------------------------------
+library(readxl)  # zum Einlesen von Excel-Dateien
+library(dplyr)   # für Datenbearbeitung
 
+# Konstanten
 source("common/konstanten.R")
 
+# Schülerdaten laden
 schueler_df <- read_excel(schueler_path)
+
+# Schuldaten laden
 schulen_df <- read_excel(schulen_path)
 
+# Schulen außerhalb des Wetteraukreises auswählen (nur öffentliche)
 schulen_filtered <- schulen_df %>%
   filter(
     di_LandkreisKz != wk_code,
     di_Rechtsstellung == "ÖFF"
   )
 
+# Dienststellennummern dieser Schulen extrahieren
 dienststellen <- unique(schulen_filtered$di_DienststellenNr)
 
+# Schüler auswählen:
+# - wohnen im Wetteraukreis
+# - besuchen Schule außerhalb des Kreises
 schueler_filtered <- schueler_df %>%
   filter(
     Stammschule %in% dienststellen,
     di_WohngemeindeKnz == wk_code
   )
 
+# Schuldaten (Schultypgruppe) dazufügen
 merged <- schueler_filtered %>%
   left_join(
     schulen_filtered %>% select(di_DienststellenNr, di_SchultypGruppe),
     by = c("Stammschule" = "di_DienststellenNr")
   )
 
+# Gruppierung nach Schultypgruppe mit Anzahl der Schüler
 grouped <- merged %>%
   group_by(di_SchultypGruppe) %>%
   summarise(`Anzahl Schüler` = n(), .groups = "drop")
 
+# Ergebnis ausgeben
 cat("Anzahl der Schüler aus dem Wetteraukreis in öffentlichen Schulen außerhalb des Kreises:\n")
 print(grouped)
