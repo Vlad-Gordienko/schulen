@@ -3,8 +3,9 @@
 # im Wetteraukreis besuchen, aber außerhalb wohnen
 # Verwendet: Schüler.xlsx und Schulen.xlsx
 # ------------------------------------------------------------------------------
-library(readxl)  # zum Einlesen von Excel-Dateien
-library(dplyr)   # für Datenverarbeitung
+library(readxl)   # Excel einlesen
+library(dplyr)    # Datenverarbeitung
+library(writexl)  # Excel schreiben
 
 # Konstanten
 source("common/konstanten.R")
@@ -22,26 +23,24 @@ schulen_filtered <- schulen_df %>%
     di_Rechtsstellung == "ÖFF"
   )
 
-# Dienststellennummern dieser Schulen extrahieren
+# Dienststellennummern extrahieren
 dienststellen <- unique(schulen_filtered$di_DienststellenNr)
 
 # Schüler auswählen:
-# - besuchen Schule im Wetteraukreis
-# - wohnen außerhalb des Kreises
 schueler_filtered <- schueler_df %>%
   filter(
     Stammschule %in% dienststellen,
     di_WohngemeindeKnz != wk_code
   )
 
-# Schuldaten (Schultypgruppe) ergänzen
+# Schultyp ergänzen
 merged <- schueler_filtered %>%
   left_join(
     schulen_filtered %>% select(di_DienststellenNr, di_SchultypGruppe),
     by = c("Stammschule" = "di_DienststellenNr")
   )
 
-# Gruppierung nach Schultypgruppe mit Anzahl der Schüler
+# Gruppierung nach Schultypgruppe
 grouped <- merged %>%
   group_by(di_SchultypGruppe) %>%
   summarise(`Anzahl Schüler` = n(), .groups = "drop")
@@ -49,3 +48,8 @@ grouped <- merged %>%
 # Ergebnis ausgeben
 cat("Anzahl der Schüler in öffentlichen Schulen im Wetteraukreis (außerhalb wohnhaft):\n")
 print(grouped)
+
+# In Excel speichern
+if (!dir.exists("result")) dir.create("result")
+
+write_xlsx(grouped, path = "result/schueler_nicht_wk.xlsx")

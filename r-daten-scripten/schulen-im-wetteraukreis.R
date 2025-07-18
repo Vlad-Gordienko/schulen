@@ -3,8 +3,9 @@
 # Unterscheidung nach Grundschulen, weiterführenden Schulen und Berufsschulen
 # Verwendet: Schulen.xlsx
 # ------------------------------------------------------------------------------
-library(readxl)  # zum Einlesen von Excel-Dateien
-library(dplyr)   # für Datenmanipulation
+library(readxl)    # Excel einlesen
+library(dplyr)     # Datenmanipulation
+library(writexl)   # Excel schreiben
 
 # Konstanten
 source("common/konstanten.R")
@@ -20,14 +21,12 @@ wk_oeffSchulen <- schulen_df %>%
   )
 
 # Definition der Schultypen
-grundschulen_typ <- "G"  # Grundschule
-weiterfuehrende_typen <- c("HR", "MSS", "KGS", "HRF", "IGS", "LER", "GYM", "GOS")  # Weiterführend
-berufsschulen_typ <- "BS"  # Berufsschule
+grundschulen_typ <- "G"
+weiterfuehrende_typen <- c("HR", "MSS", "KGS", "HRF", "IGS", "LER", "GYM", "GOS")
+berufsschulen_typ <- "BS"
 
-# Anzahl aller öffentlichen Schulen im Kreis
+# Anzahl berechnen
 gesamt <- nrow(wk_oeffSchulen)
-
-# Anzahl nach Typen ermitteln
 grundschulen <- sum(wk_oeffSchulen$di_Schultyp == grundschulen_typ, na.rm = TRUE)
 weiterfuehrende <- sum(wk_oeffSchulen$di_Schultyp %in% weiterfuehrende_typen, na.rm = TRUE)
 berufsschulen <- sum(wk_oeffSchulen$di_Schultyp == berufsschulen_typ, na.rm = TRUE)
@@ -37,3 +36,15 @@ cat("Gesamt:", gesamt, "\n")
 cat("Grundschulen:", grundschulen, "\n")
 cat("Weiterführende Schulen:", weiterfuehrende, "\n")
 cat("Berufsschulen:", berufsschulen, "\n")
+
+# Ergebnis als Tabelle
+result <- data.frame(
+  Kategorie = c("Gesamt", "Grundschulen", "Weiterführende Schulen", "Berufsschulen"),
+  Anzahl = c(gesamt, grundschulen, weiterfuehrende, berufsschulen)
+)
+
+# In Excel schreiben
+if (!dir.exists("result")) dir.create("result")
+
+write_xlsx(result, path = "result/schulen_anzahl.xlsx")
+

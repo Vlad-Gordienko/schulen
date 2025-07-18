@@ -5,6 +5,7 @@
 # ------------------------------------------------------------------------------
 library(readxl)  # zum Einlesen von Excel-Dateien
 library(dplyr)   # für Datenverarbeitung
+library(writexl)  # Excel schreiben
 
 # Konstanten
 source("common/konstanten.R")
@@ -55,3 +56,4 @@ gruppiert <- merged %>%
 # Ergebnis ausgeben
 cat("Anteil der Schüler mit nicht-deutscher Verkehrssprache in Familien (nach Schultypgruppe):\n")
 print(gruppiert)
+write_xlsx(gruppiert, path = "result/verkehrssprache.xlsx")

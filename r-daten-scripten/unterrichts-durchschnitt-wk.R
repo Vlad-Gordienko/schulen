@@ -5,6 +5,7 @@
 # ------------------------------------------------------------------------------
 library(readxl)  # zum Einlesen von Excel-Dateien
 library(dplyr)   # für Datenverarbeitung
+library(writexl)  # Excel schreiben
 
 # Konstanten
 source("common/konstanten.R")
@@ -46,3 +47,4 @@ grouped <- merged %>%
 # Ergebnis ausgeben
 cat("Mittlere und durchschnittliche Anzahl von Schülern im Unterricht (pro Schule im Wetteraukreis):\n\n")
 print(grouped)
+write_xlsx(grouped, path = "result/unterricht_durchschnitt.xlsx")

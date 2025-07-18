@@ -3,8 +3,9 @@
 # pro Schultypgruppe (ohne berufliche Schulen) im Wetteraukreis
 # Verwendet: Klassen.xlsx und Schulen.xlsx
 # ------------------------------------------------------------------------------
-library(readxl)  # zum Einlesen von Excel-Dateien
-library(dplyr)   # für Datenmanipulation
+library(readxl)   # Excel einlesen
+library(dplyr)    # Datenmanipulation
+library(writexl)  # Excel schreiben
 
 # Konstanten
 source("common/konstanten.R")
@@ -16,8 +17,6 @@ klassen_df <- read_excel(klassen_path)
 schulen_df <- read_excel(schulen_path)
 
 # Schulen im Wetteraukreis filtern:
-# - nur öffentliche Schulen
-# - keine beruflichen Schulen
 schulen_filtered <- schulen_df %>%
   filter(
     di_LandkreisKz == wk_code,
@@ -42,3 +41,8 @@ result <- merged %>%
 # Ergebnis ausgeben
 cat("Durchschnitt und Median der Schüleranzahl pro Schultypgruppe:\n")
 print(result)
+
+# In Excel speichern
+if (!dir.exists("result")) dir.create("result")
+
+write_xlsx(result, path = "result/klassengroessen.xlsx")
