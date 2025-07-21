@@ -1,7 +1,9 @@
 # ------------------------------------------------------------------------------
+# === Einpendler ===
 # Skript zur Ermittlung der Schüler, die eine öffentliche Schule
 # im Wetteraukreis besuchen, aber außerhalb wohnen
-# Verwendet: Schüler.xlsx und Schulen.xlsx
+# Quellen: Schüler.xlsx und Schulen.xlsx
+# Ergebnis: schueler_nicht_wk.xlsx
 # ------------------------------------------------------------------------------
 library(readxl)   # Excel einlesen
 library(dplyr)    # Datenverarbeitung

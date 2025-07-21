@@ -1,7 +1,8 @@
 # ------------------------------------------------------------------------------
 # Skript zur Berechnung von Durchschnitt und Median der Schüleranzahl
 # pro Schultypgruppe (ohne berufliche Schulen) im Wetteraukreis
-# Verwendet: Klassen.xlsx und Schulen.xlsx
+# Quellen: Klassen.xlsx und Schulen.xlsx
+# Ergebnis: klassengroessen.xlsx
 # ------------------------------------------------------------------------------
 library(readxl)   # Excel einlesen
 library(dplyr)    # Datenmanipulation
@@ -33,8 +34,8 @@ merged <- klassen_df %>%
 result <- merged %>%
   group_by(di_SchultypGruppe) %>%
   summarise(
-    Mittelwert = mean(kl_AnzahlSchueler, na.rm = TRUE),
-    Median = median(kl_AnzahlSchueler, na.rm = TRUE),
+    Durchschnitt = round(mean(kl_AnzahlSchueler, na.rm = TRUE), 2),
+    Mittelwert   = round(median(kl_AnzahlSchueler, na.rm = TRUE), 2),
     .groups = "drop"
   )
 

@@ -2,18 +2,17 @@
 # Skript zur Ermittlung des Anteils von Schülern mit nicht-deutscher
 # Verkehrssprache in der Familie, gruppiert nach Schultypgruppe
 # Verwendet: Schüler.xlsx und Schulen.xlsx
+# Ergebnis: verkehrssprache.xlsx
 # ------------------------------------------------------------------------------
-library(readxl)  # zum Einlesen von Excel-Dateien
-library(dplyr)   # für Datenverarbeitung
-library(writexl)  # Excel schreiben
+library(readxl)
+library(dplyr)
+library(writexl)
 
 # Konstanten
 source("common/konstanten.R")
 
-# Schülerdaten laden
+# Daten laden
 schueler_df <- read_excel(schueler_path)
-
-# Schuldaten laden
 schulen_df <- read_excel(schulen_path)
 
 # Öffentliche Schulen im Wetteraukreis auswählen
@@ -23,37 +22,33 @@ wk_oeff_schulen <- schulen_df %>%
     di_Rechtsstellung == "ÖFF"
   )
 
-# Dienststellennummern extrahieren
 dienststellen <- unique(wk_oeff_schulen$di_DienststellenNr)
 
-# Schüler im Wetteraukreis auswählen
-schueler_in_wk <- schueler_df %>%
-  filter(Stammschule %in% dienststellen)
-
-# Schultypgruppe ergänzen
-merged <- schueler_in_wk %>%
+# Schüler auswählen und Schultyp ergänzen
+merged <- schueler_df %>%
+  filter(Stammschule %in% dienststellen) %>%
   left_join(
     wk_oeff_schulen %>% select(di_DienststellenNr, di_SchultypGruppe),
     by = c("Stammschule" = "di_DienststellenNr")
-  )
-
-# Sprache vereinheitlichen und Indikator für Nicht-Deutsch erstellen
-merged <- merged %>%
+  ) %>%
   mutate(
     VerkehrsspracheInFamilie = tolower(trimws(VerkehrsspracheInFamilie)),
     NichtDeutsch = ifelse(VerkehrsspracheInFamilie != "de", 1, 0)
   )
 
-# Gruppierung nach Schultypgruppe und Berechnung des Anteils
+# Gruppierung und Berechnungen
 gruppiert <- merged %>%
   group_by(di_SchultypGruppe) %>%
   summarise(
-    AnteilNichtDeutsch = round(sum(NichtDeutsch, na.rm = TRUE) / n() * 100, 2),
-    GesamtAnzahl = n(),
+    Gesamt = n(),
+    NichtDeutsch = sum(NichtDeutsch, na.rm = TRUE),
+    ProzentNichtDeutsch = round(NichtDeutsch / Gesamt * 100, 2),
     .groups = "drop"
   )
 
 # Ergebnis ausgeben
-cat("Anteil der Schüler mit nicht-deutscher Verkehrssprache in Familien (nach Schultypgruppe):\n")
+cat("Anteil und Anzahl der Schüler mit nicht-deutscher Verkehrssprache (nach Schultypgruppe):\n")
 print(gruppiert)
+
+# In Excel speichern
 write_xlsx(gruppiert, path = "result/verkehrssprache.xlsx")

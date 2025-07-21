@@ -1,7 +1,9 @@
 # ------------------------------------------------------------------------------
+# === Auspendler ===
 # Skript zur Ermittlung der Schüler aus dem Wetteraukreis,
 # die öffentliche Schulen außerhalb des Kreises besuchen
-# Verwendet: Schüler.xlsx und Schulen.xlsx
+# Quellen: Schüler.xlsx und Schulen.xlsx
+# Ergebnis: schueler_ausserhalb_wk.xlsx
 # ------------------------------------------------------------------------------
 library(readxl)   # Excel einlesen
 library(dplyr)    # Datenbearbeitung
