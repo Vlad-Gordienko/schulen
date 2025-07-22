@@ -33,16 +33,16 @@ merged <- schueler_df %>%
   ) %>%
   mutate(
     VerkehrsspracheInFamilie = tolower(trimws(VerkehrsspracheInFamilie)),
-    NichtDeutsch = ifelse(VerkehrsspracheInFamilie != "de", 1, 0)
+    NichtDeutsch = ifelse(VerkehrsspracheInFamilie != "de", 1, 0),
+    Deutsch = ifelse(VerkehrsspracheInFamilie == "de", 1, 0)
   )
 
-# Gruppierung und Berechnungen
+# Gruppierung
 gruppiert <- merged %>%
   group_by(di_SchultypGruppe) %>%
   summarise(
-    Gesamt = n(),
     NichtDeutsch = sum(NichtDeutsch, na.rm = TRUE),
-    ProzentNichtDeutsch = round(NichtDeutsch / Gesamt * 100, 2),
+    Deutsch = sum(Deutsch, na.rm = TRUE),
     .groups = "drop"
   )
 

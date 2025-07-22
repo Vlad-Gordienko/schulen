@@ -36,7 +36,7 @@ field_config = {
     'ZuzugsjahrBRD': ['-', '2011'],
     'Geburtsland': ['D', 'USA'],
     'Geburtsland_lang': ['Deutschland', 'Vereinigte Staaten (USA, Amerika)'],
-    'VerkehrsspracheInFamilie': ['de', 'ua'],
+    'VerkehrsspracheInFamilie': ['de', 'de', 'de', 'ua'],
     'VerkehrsspracheInFamilie_lang': ['Deutsch'],
     'Stammschule': [6289, 6106, 3445, 6310, 5175, 4758, 6256, 5176, 5174, 5160, 3417],
     'Stufe': [1, 9, 10, 11, 12],
